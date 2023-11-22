@@ -3,6 +3,7 @@ const Product = require('../controllers/product')
 const User = require('../controllers/user')
 
 const router = require('express').Router();
+
 const multer = require('multer');
 
 
@@ -15,6 +16,7 @@ const storage = multer.diskStorage({
         cb(null, filename);
     }
 });
+
 
 const upload = multer({ storage: storage })
 
