@@ -10,6 +10,8 @@ require('dotenv').config();
 const objection = require('./router/routes')
 const knex = require('./config/db')
 
+const stripe = require('./router/route')
+
 const PORT = process.env.PORT;  //server port
 
 //middleware
@@ -26,6 +28,7 @@ app.use(express.static(path.join(__dirname, './public')));
 //api
 app.use('/api', routes)
 app.use('/shop', objection)
+app.use('/stripe', stripe)
 
 //start app on this port
 app.listen(PORT, () => {

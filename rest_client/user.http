@@ -9,7 +9,7 @@ Content-Type: application/json
     "name": "John Doe",
     "email": "john@mail.com",
    "password": "userone",
-   "profile_photo": "https://media.istockphoto.com/id/450100369/photo/portrait-of-a-businesswoman.jpg?s=612x612&w=0&k=20&c=WK4vKnf6wNGwTqygZ62MzQ_l3fjd4H2ArcOXZ4UJmBY="
+   "picture": "https://media.istockphoto.com/id/450100369/photo/portrait-of-a-businesswoman.jpg?s=612x612&w=0&k=20&c=WK4vKnf6wNGwTqygZ62MzQ_l3fjd4H2ArcOXZ4UJmBY="
 }
 
 ### login a user
@@ -23,6 +23,7 @@ Content-Type: application/json
 
 ###
 POST http://localhost:7272/shop/v1/store-image
+
 ###
 GET http://localhost:7272/uploads/user_images/user.jpg
 
@@ -37,6 +38,17 @@ Content-Type: application/json
 {
     "email": "abi@mail.com",
    "password": "mainAdmin"
+}
+
+### google login
+POST http://localhost:7272/shop/v1/googleUser
+Content-Type: application/json
+
+{
+    "name": "John Doe",
+    "email": "john@mail.com",
+    "password": "110044552255886633",
+   "picture": "https://media.istockphoto.com/id/450100369/photo/portrait-of-a-businesswoman.jpg?s=612x612&w=0&k=20&c=WK4vKnf6wNGwTqygZ62MzQ_l3fjd4H2ArcOXZ4UJmBY="
 }
 
 

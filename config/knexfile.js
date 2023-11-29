@@ -12,6 +12,7 @@ module.exports = {
   //   },
   //   useNullAsDefault: true, // Required for SQLite
   // },
+  
   development: {
     client: 'mysql',
     connection: {

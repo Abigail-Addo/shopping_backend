@@ -25,6 +25,11 @@ router.post('/v1/store-image', upload.single('file'), (req, res) => {
     User.uploadUserImage(req, res);
 });
 
+// google login
+router.post('/v1/googleUser', (req, res) => {
+    User.googleUser(req, res);
+});
+
 // register a new user
 router.post('/v1/user', (req, res) => {
     User.createUser(req, res);

@@ -17,7 +17,7 @@ class User extends Model {
                 name: { type: 'string' },
                 email: { type: 'string' },
                 password: { type: 'string' },
-                profile_photo: { type: 'string' },
+                picture: { type: 'string' },
                 created_at: { type: 'string' },
                 updated_at: { type: 'string' }
             }

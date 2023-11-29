@@ -5,7 +5,7 @@ exports.uploadUserImage = (req, res) => {
     if (!req.file) {
         return res.status(400).json({ message: 'No file uploaded' });
     }
-  
+
     req.body.filename = req.file.filename;
     res.status(200).json({
         message: 'File uploaded successfully',
@@ -35,7 +35,7 @@ exports.createUser = async (req, res) => {
                 name: name,
                 email: email,
                 password: password,
-                profile_photo: `${process.env.SERVER_URL}uploads/user/${filename}`
+                picture: `${process.env.SERVER_URL}uploads/user/${filename}`
             });
             return res.status(201).json(userId);
         } else {
@@ -71,6 +71,40 @@ exports.getAUser = async (req, res) => {
     }
 };
 
+// google login
+exports.googleUser = async (req, res) => {
+    try {
+        const { email, name, picture, password } = req.body;
+
+        const user = await User.query().where('email', email).first();
+        if (!user) {
+            const userId = await User.query().insertGraph({
+                name: name,
+                email: email,
+                password: password,
+                picture: picture
+            });
+            return res.status(201).json(userId);
+        } else {
+            const { email, password } = req.body;
+
+            // Query the database to find a user by email and password
+            const user = await User.query().where('email', email).first();
+            const userPassword = await User.query().where('password', password).first();
+
+            if (user && userPassword) {
+                res.status(200).json(user);
+            } else {
+                res.status(404).json({ message: 'User not found' });
+            }
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+}
+
+// get all users
 exports.getAllUsers = async (req, res) => {
 
     try {
@@ -81,4 +115,5 @@ exports.getAllUsers = async (req, res) => {
         return res.status(500).json({ error: 'Internal Server Error' });
     }
 };
+
 
