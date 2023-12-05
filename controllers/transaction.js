@@ -3,11 +3,11 @@ const Transaction = require('../model/transaction')
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 exports.paymentIntent = async (req, res) => {
-    const { amount, currency } = req.body;
+    const {  amount, currency } = req.body;
     try {
         const paymentIntent = await stripe.paymentIntents.create({
-            currency: currency,
             amount: amount,
+            currency: currency,
             automatic_payment_methods: { enabled: true },
         });
 

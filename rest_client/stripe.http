@@ -3,7 +3,7 @@ POST http://localhost:7272/stripe/v1/create-payment-intent
 Content-Type: application/json
 
 {
-    "amount": 2000,
+    "amount": 15000,
     "currency": "usd"
 }
 
