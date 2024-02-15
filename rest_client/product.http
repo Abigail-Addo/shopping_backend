@@ -1,0 +1,9 @@
+### get all products
+GET http://localhost:7272/shop/v1/products
+
+### route for uploading the product image
+POST http://localhost:7272/shop/v1/store-product-image
+
+###add a new product
+POST http://localhost:7272/shop/v1/product
+

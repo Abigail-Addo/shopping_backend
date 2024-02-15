@@ -1,0 +1,11 @@
+### payment intent
+POST http://localhost:7272/stripe/v1/create-payment-intent
+Content-Type: application/json
+
+{
+    "amount": 15000,
+    "currency": "usd"
+}
+
+### payment config
+GET http://localhost:7272/stripe/v1/config
