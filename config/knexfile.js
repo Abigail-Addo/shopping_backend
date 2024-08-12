@@ -6,11 +6,11 @@ require('dotenv').config();
 export const development = {
   client: 'mysql',
   connection: {
-    user: 'avnadmin',
+    user: process.env.SQL_USER,
     password: process.env.SQL_PASSWORD,
-    port: '23478',
-    database: 'defaultdb',
-    host: 'hairbie-shop-addoa350-448a.l.aivencloud.com',
+    port: process.env.SQL_PORT,
+    database: process.env.SQL_DATABASE,
+    host: process.env.SQL_HOST,
   },
   seeds: {
     directory: './seed'
@@ -19,11 +19,11 @@ export const development = {
 export const staging = {
   client: 'mysql',
   connection: {
-    user: 'avnadmin',
+    user: process.env.SQL_USER,
     password: process.env.SQL_PASSWORD,
-    port: '23478',
-    database: 'defaultdb',
-    host: 'hairbie-shop-addoa350-448a.l.aivencloud.com',
+    port: process.env.SQL_PORT,
+    database: process.env.SQL_DATABASE,
+    host: process.env.SQL_HOST,
   },
   seeds: {
     directory: './seed'
@@ -35,11 +35,11 @@ export const staging = {
 export const production = {
   client: 'mysql',
   connection: {
-    user: 'avnadmin',
+    user: process.env.SQL_USER,
     password: process.env.SQL_PASSWORD,
-    port: '23478',
-    database: 'defaultdb',
-    host: 'hairbie-shop-addoa350-448a.l.aivencloud.com',
+    port: process.env.SQL_PORT,
+    database: process.env.SQL_DATABASE,
+    host: process.env.SQL_HOST,
   },
   seeds: {
     directory: './seed'
