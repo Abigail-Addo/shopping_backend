@@ -16,11 +16,11 @@ module.exports = {
   development: {
     client: 'mysql',
     connection: {
-      user: 'root',
-      password: '',
-      port: '3306',
-      database: 'hairbie_shop',
-      host: '127.0.0.1',
+      user: 'avnadmin',
+      password: 'AVNS_bYjtQ-QU-cdAdbH6E-j',
+      port: '23478',
+      database: 'defaultdb',
+      host: 'hairbie-shop-addoa350-448a.l.aivencloud.com',
     },
     seeds: {
       directory: './seed'
@@ -44,15 +44,16 @@ module.exports = {
   },
 
   production: {
-    client: 'postgresql',
+    client: 'mysql',
     connection: {
-      database: 'my_db',
-      user: 'username',
-      password: 'password'
+      user: 'avnadmin',
+      password: 'AVNS_bYjtQ-QU-cdAdbH6E-j',
+      port: '23478',
+      database: 'defaultdb',
+      host: 'hairbie-shop-addoa350-448a.l.aivencloud.com',
     },
-    pool: {
-      min: 2,
-      max: 10
+    seeds: {
+      directory: './seed'
     },
     migrations: {
       tableName: 'knex_migrations'
