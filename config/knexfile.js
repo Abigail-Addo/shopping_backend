@@ -17,30 +17,32 @@ export const development = {
   }
 };
 export const staging = {
-  client: 'postgresql',
+  client: 'mysql',
   connection: {
-    database: 'my_db',
-    user: 'username',
-    password: 'password'
+    user: 'avnadmin',
+    password: process.env.SQL_PASSWORD,
+    port: '23478',
+    database: 'defaultdb',
+    host: 'hairbie-shop-addoa350-448a.l.aivencloud.com',
   },
-  pool: {
-    min: 2,
-    max: 10
+  seeds: {
+    directory: './seed'
   },
   migrations: {
     tableName: 'knex_migrations'
   }
 };
 export const production = {
-  client: 'postgresql',
+  client: 'mysql',
   connection: {
-    database: 'my_db',
-    user: 'username',
-    password: 'password'
+    user: 'avnadmin',
+    password: process.env.SQL_PASSWORD,
+    port: '23478',
+    database: 'defaultdb',
+    host: 'hairbie-shop-addoa350-448a.l.aivencloud.com',
   },
-  pool: {
-    min: 2,
-    max: 10
+  seeds: {
+    directory: './seed'
   },
   migrations: {
     tableName: 'knex_migrations'
