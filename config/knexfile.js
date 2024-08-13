@@ -5,7 +5,7 @@ require("dotenv").config();
  */
 module.exports = {
   development: {
-    client: "mysql",
+    client: "mysql2",
     connection: {
       user: process.env.SQL_USER,
       password: process.env.SQL_PASSWORD,
@@ -18,7 +18,7 @@ module.exports = {
     },
   },
   staging: {
-    client: "mysql",
+    client: "mysql2",
     connection: {
       user: process.env.SQL_USER,
       password: process.env.SQL_PASSWORD,
@@ -34,7 +34,7 @@ module.exports = {
     },
   },
   production: {
-    client: "mysql",
+    client: "mysql2",
     connection: {
       user: process.env.SQL_USER,
       password: process.env.SQL_PASSWORD,
