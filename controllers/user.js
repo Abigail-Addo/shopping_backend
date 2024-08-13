@@ -34,7 +34,7 @@ exports.createUser = async (req, res) => {
         name: name,
         email: email,
         password: password,
-        picture: `https://shopping-backend-njkd.onrender.com/uploads/user/${filename}`,
+        picture: `https://shopping-backend-mhxl.onrender.com/uploads/user/${filename}`,
       });
       return res.status(201).json(userId);
     } else {

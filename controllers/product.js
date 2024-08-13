@@ -35,7 +35,7 @@ exports.addProduct = async (req, res) => {
       price: price,
       stocks: stock,
       description: description,
-      image: `https://shopping-backend-njkd.onrender.com/uploads/products/${filename}`,
+      image: `https://shopping-backend-mhxl.onrender.com/uploads/products/${filename}`,
     });
     return res.status(201).json(product);
   } catch (error) {
