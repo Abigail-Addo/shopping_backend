@@ -13,7 +13,7 @@ exports.uploadProductImage = async (req, res) => {
     const result = await new Promise((resolve, reject) => {
       cloudinary.uploader
         .upload_stream(
-          { folder: "products", public_id: uuidv4() }, // Optional: specify a folder and public_id
+          { folder: "/uploads/products", public_id: uuidv4() }, // Optional: specify a folder and public_id
           (error, result) => {
             if (error) {
               return reject(error);
