@@ -90,131 +90,52 @@ exports.createOrder = async (req, res) => {
   }
 };
 
-// exports.createOrder = async (req, res) => {
-//     try {
-//         const { product_id, user_id, quantity } = req.body;
-
-//         if (!product_id || !user_id || !quantity) {
-//             return res.status(400).json({ message: "Missing product_id, user_id, or quantity" });
-//         }
-
-//         // Getting the price of the product
-//         const product = await Product.query().findById(product_id);
-
-//         if (!product) {
-//             return res.status(404).json({ message: "Product not found" });
-//         }
-
-//         // Calculate the total price based on quantity and product price
-//         const totalPrice = product.price * quantity;
-
-//         // Check if the order already exists
-//         const existingOrder = await Order.query()
-//             .where({ product_id, user_id })
-//             .first();
-
-//         if (existingOrder) {
-//             return res.status(409).json({ message: "Product already added to cart" });
-//         }
-
-//         // Create the order with the calculated total price
-//         const order = await Order.query().insertGraph({
-//             product_id,
-//             user_id,
-//             price: totalPrice, // Set the total price
-//             quantity // Set the quantity
-//         });
-
-//         if (!order) {
-//             throw new Error("Failed to create order");
-//         }
-
-//         return res.status(200).json(order);
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).json({ error: 'Server error' });
-//     }
-// }
-
-// exports.updateOrder = async (req, res) => {
-//     try {
-//         const { product_id, user_id, quantity } = req.body;
-
-//         if (!product_id || !user_id || !quantity) {
-//             return res.status(400).json({ message: "Missing product_id, user_id, or quantity" });
-//         }
-
-//         // Getting the price of the product
-//         const product = await Product.query().findById(product_id);
-
-//         if (!product) {
-//             return res.status(404).json({ message: "Product not found" });
-//         }
-
-//         // Calculate the total price based on quantity and product price
-//         const totalPrice = product.price * quantity;
-
-//         // Create the order with the calculated total price
-//         const order = await Order.query().update({
-//             product_id,
-//             user_id,
-//             price: totalPrice,
-//             quantity
-//         });
-
-//         if (!order) {
-//             throw new Error("Failed to create order");
-//         }
-
-//         return res.status(200).json(order);
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).json({ error: 'Server error' });
-//     }
-// }
-
 // create orders with user Id
+exports.updateOrder = async (req, res) => {
+  try {
+    const { id } = req.params; // Get the order_id from route parameters
+    if (!id) {
+      return res.status(400).json({ message: "Missing or undefined order ID" });
+    }
 
-// exports.updateOrder = async (req, res) => {
-//   try {
-//     const { id } = req.params; // Get the order_id from route parameters
-//     if (!id) {
-//       return res.status(400).json({ message: "Missing or undefined id" });
-//     }
+    const { product_id, user_id, quantity } = req.body;
+    if (!product_id || !user_id || !quantity) {
+      return res.status(400).json({
+        message: "Missing product ID, user ID, or quantity",
+      });
+    }
 
-//     const { product_id, user_id, quantity } = req.body;
-//     if (!product_id || !user_id || !quantity) {
-//       return res.status(400).json({
-//         message: "Missing order ID, product ID, user ID, or quantity",
-//       });
-//     }
+    // Fetch the product to get its price
+    const product = await Product.query().findById(product_id);
 
-//     const product = await Product.query().findById(product_id);
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
 
-//     if (!product) {
-//       return res.status(404).json({ message: "Product not found" });
-//     }
+    const totalPrice = product.price * quantity;
 
-//     const totalPrice = product.price * quantity;
+    // Update the order
+    const updatedOrder = await Order.query()
+      .patch({
+        price: totalPrice,
+        quantity,
+      })
+      .where("id", id)
+      .andWhere("product_id", product_id)
+      .andWhere("user_id", user_id);
 
-//     const updatedOrder = await Order.query()
-//       .patch({
-//         price: totalPrice,
-//         quantity,
-//       })
-//       .where("product_id", product_id)
-//       .where("user_id", user_id);
+    if (!updatedOrder) {
+      return res.status(500).json({ message: "Failed to update order" });
+    }
 
-//     if (!updatedOrder) {
-//       throw new Error("Failed to update order");
-//     }
-
-//     return res.status(200).json(totalPrice);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: "Server error" });
-//   }
-// };
+    return res
+      .status(200)
+      .json({ message: "Order updated successfully", totalPrice });
+  } catch (error) {
+    console.error("Error updating order:", error);
+    res.status(500).json({ error: "Server error" });
+  }
+};
 
 exports.updateOrder = async (req, res) => {
   try {
@@ -224,7 +145,7 @@ exports.updateOrder = async (req, res) => {
     }
 
     const { quantity } = req.body;
-    if (!quantity ) {
+    if (!quantity) {
       return res.status(400).json({
         message: "Missing product",
       });
@@ -239,18 +160,16 @@ exports.updateOrder = async (req, res) => {
     const totalPrice = product.price * quantity;
 
     // Update the order based on its unique identifier (id)
-    const updatedOrder = await Order.query()
-      .findById(id)
-      .patch({
-        price: totalPrice,
-        quantity
-      });
+    const updatedOrder = await Order.query().findById(id).patch({
+      price: totalPrice,
+      quantity,
+    });
 
     if (!updatedOrder) {
       throw new Error("Failed to update order");
     }
 
-    return res.status(200).json(totalPrice); // Respond with the updated totalPrice
+    return res.status(200).json(totalPrice);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Server error" });
