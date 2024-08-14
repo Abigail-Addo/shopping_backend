@@ -84,18 +84,7 @@ router.patch("/v1/order/:id", (req, res) => {
   Order.updateOrder(req, res);
 });
 
-const Productstorage = multer
-  .memoryStorage
-  // {
-  // destination: (req, file, cb) => {
-  //   cb(null, "public/uploads/products/");
-  // },
-  // filename: (req, file, cb) => {
-  //   const filename = `${file.originalname}`;
-  //   cb(null, filename);
-  // },
-  // }
-  ();
+const Productstorage = multer.memoryStorage();
 
 const Productupload = multer({ storage: Productstorage });
 
