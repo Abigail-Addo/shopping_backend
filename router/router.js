@@ -5,6 +5,7 @@ const Product = require("../controllers/product");
 const User = require("../controllers/user");
 const Transaction = require("../controllers/transaction");
 
+import { v2 as cloudinary } from "cloudinary";
 const multer = require("multer");
 
 const storage = multer.diskStorage({
@@ -83,15 +84,18 @@ router.patch("/v1/order/:id", (req, res) => {
   Order.updateOrder(req, res);
 });
 
-const Productstorage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "public/uploads/products/");
-  },
-  filename: (req, file, cb) => {
-    const filename = `${file.originalname}`;
-    cb(null, filename);
-  },
-});
+const Productstorage = multer
+  .memoryStorage
+  // {
+  // destination: (req, file, cb) => {
+  //   cb(null, "public/uploads/products/");
+  // },
+  // filename: (req, file, cb) => {
+  //   const filename = `${file.originalname}`;
+  //   cb(null, filename);
+  // },
+  // }
+  ();
 
 const Productupload = multer({ storage: Productstorage });
 

@@ -1,22 +1,45 @@
 const Product = require("../model/product");
+import { v2 as cloudinary } from "cloudinary";
+const { v4: uuidv4 } = require("uuid");
 
 // route for uploading the image
-exports.uploadProductImage = (req, res) => {
+exports.uploadProductImage = async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ message: "No file uploaded" });
   }
 
-  req.body.filename = req.file.filename;
-  res.status(200).json({
-    message: "File uploaded successfully",
-    filename: req.body.filename,
-  });
+  try {
+    // Upload file to Cloudinary
+    const result = await new Promise((resolve, reject) => {
+      cloudinary.uploader
+        .upload_stream(
+          { folder: "products", public_id: uuidv4() }, // Optional: specify a folder and public_id
+          (error, result) => {
+            if (error) {
+              return reject(error);
+            }
+            resolve(result);
+          }
+        )
+        .end(req.file.buffer); // Pipe the file buffer to Cloudinary
+    });
+
+    const imageUrl = result.secure_url;
+
+    res.status(200).json({
+      message: "File uploaded successfully",
+      imageUrl: imageUrl,
+    });
+  } catch (error) {
+    console.error("Error uploading to Cloudinary:", error);
+    res.status(500).json({ message: "Failed to upload file to Cloudinary" });
+  }
 };
 
-//register new user
+//add a new product
 exports.addProduct = async (req, res) => {
   try {
-    const { name, price, description, stock, filename } = req.body;
+    const { name, price, description, stock, imageUrl } = req.body;
 
     if (!name) {
       return res.status(400).json({ error: "name is required" });
@@ -35,7 +58,7 @@ exports.addProduct = async (req, res) => {
       price: price,
       stocks: stock,
       description: description,
-      image: `https://shopping-backend-mhxl.onrender.com/uploads/products/${filename}`,
+      image: imageUrl,
     });
     return res.status(201).json(product);
   } catch (error) {
