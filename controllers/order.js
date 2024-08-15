@@ -95,17 +95,16 @@ exports.updateOrder = async (req, res) => {
   try {
     const { id } = req.params; // Get the order_id from route parameters
     if (!id) {
-      return res.status(400).json({ message: "Missing or undefined order ID" });
+      return res.status(400).json({ message: "Missing or undefined id" });
     }
 
-    const { product_id, user_id, quantity } = req.body;
-    if (!product_id || !user_id || !quantity) {
+    const { product_id, user_id, quantity, price } = req.body;
+    if (!product_id || !user_id || !quantity || !price) {
       return res.status(400).json({
-        message: "Missing product ID, user ID, or quantity",
+        message: "Missing order ID, product ID, user ID, or quantity",
       });
     }
 
-    // Fetch the product to get its price
     const product = await Product.query().findById(product_id);
 
     if (!product) {
@@ -114,29 +113,21 @@ exports.updateOrder = async (req, res) => {
 
     const totalPrice = product.price * quantity;
 
-    // Update the order
-    const updatedOrderCount = await Order.query()
+    const updatedOrder = await Order.query()
       .patch({
         price: totalPrice,
         quantity,
       })
-      .where("id", id)
-      .andWhere("product_id", product_id)
-      .andWhere("user_id", user_id);
+      .where("product_id", product_id)
+      .where("user_id", user_id);
 
-    if (updatedOrderCount === 0) {
-      return res.status(500).json({ message: "Failed to update order" });
+    if (!updatedOrder) {
+      throw new Error("Failed to update order");
     }
 
-    // Fetch the updated order to return in the response
-    const updatedOrder = await Order.query().findById(id);
-
-    return res.status(200).json({
-      message: "Order updated successfully",
-      order: updatedOrder,
-    });
+    return res.status(200).json(totalPrice);
   } catch (error) {
-    console.error("Error updating order:", error);
+    console.error(error);
     res.status(500).json({ error: "Server error" });
   }
 };
