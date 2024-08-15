@@ -137,45 +137,6 @@ exports.updateOrder = async (req, res) => {
   }
 };
 
-exports.updateOrder = async (req, res) => {
-  try {
-    const { id } = req.params; // Get the order_id from route parameters
-    if (!id) {
-      return res.status(400).json({ message: "Missing or undefined id" });
-    }
-
-    const { quantity } = req.body;
-    if (!quantity) {
-      return res.status(400).json({
-        message: "Missing product",
-      });
-    }
-
-    const product = await Product.query().findById(id);
-
-    if (!product) {
-      return res.status(404).json({ message: "Product not found" });
-    }
-
-    const totalPrice = product.price * quantity;
-
-    // Update the order based on its unique identifier (id)
-    const updatedOrder = await Order.query().findById(id).patch({
-      price: totalPrice,
-      quantity,
-    });
-
-    if (!updatedOrder) {
-      throw new Error("Failed to update order");
-    }
-
-    return res.status(200).json(totalPrice);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Server error" });
-  }
-};
-
 exports.getOrderWithUserId = async (req, res) => {
   try {
     const { user_id } = req.body;
