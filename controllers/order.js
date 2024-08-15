@@ -115,7 +115,7 @@ exports.updateOrder = async (req, res) => {
     const totalPrice = product.price * quantity;
 
     // Update the order
-    const updatedOrder = await Order.query()
+    const updatedOrderCount = await Order.query()
       .patch({
         price: totalPrice,
         quantity,
@@ -124,13 +124,17 @@ exports.updateOrder = async (req, res) => {
       .andWhere("product_id", product_id)
       .andWhere("user_id", user_id);
 
-    if (!updatedOrder) {
+    if (updatedOrderCount === 0) {
       return res.status(500).json({ message: "Failed to update order" });
     }
 
-    return res
-      .status(200)
-      .json({ message: "Order updated successfully", totalPrice });
+    // Fetch the updated order to return in the response
+    const updatedOrder = await Order.query().findById(id);
+
+    return res.status(200).json({
+      message: "Order updated successfully",
+      order: updatedOrder,
+    });
   } catch (error) {
     console.error("Error updating order:", error);
     res.status(500).json({ error: "Server error" });
