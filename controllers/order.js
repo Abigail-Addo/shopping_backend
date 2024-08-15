@@ -117,7 +117,7 @@ exports.updateOrder = async (req, res) => {
     // Update the order
     const updatedOrderCount = await Order.query()
       .patch({
-        totalPrice,
+        price: totalPrice,
         quantity,
       })
       .where("id", id)
