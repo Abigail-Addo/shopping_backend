@@ -112,10 +112,12 @@ exports.updateOrder = async (req, res) => {
       return res.status(404).json({ message: "Product not found" });
     }
 
+    const totalPrice = product.price * quantity;
+
     // Update the order
     const updatedOrderCount = await Order.query()
       .patch({
-        price,
+        totalPrice,
         quantity,
       })
       .where("id", id)
